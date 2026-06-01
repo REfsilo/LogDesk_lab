@@ -1,0 +1,115 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f3f5f7;
+    color: #222;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+.header,
+.card {
+    background: #ffffff;
+    border: 1px solid #d9dee3;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    margin: 0 0 8px 0;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+input,
+select {
+    padding: 10px;
+    border: 1px solid #c5ccd3;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+button,
+.debug-actions a {
+    width: fit-content;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: none;
+    background: #2358d2;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+button:hover,
+.debug-actions a:hover {
+    background: #183f98;
+}
+
+.debug-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.ticket {
+    border: 1px solid #d9dee3;
+    background: #fafafa;
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 14px;
+}
+
+.inline-form {
+    margin-top: 10px;
+}
+
+.message {
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.message.success {
+    background: #e8f7ed;
+    border: 1px solid #8fd19e;
+}
+
+.message.error {
+    background: #fdeaea;
+    border: 1px solid #e09292;
+}
+
+.empty {
+    color: #666;
+}
+
+.error-page {
+    border-color: #e09292;
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 12px;
+    }
+
+    button,
+    .debug-actions a {
+        width: 100%;
+        text-align: center;
+    }
+}

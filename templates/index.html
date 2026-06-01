@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>LogDesk Lab</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <main class="container">
+        <header class="header">
+            <h1 data-testid="page-title">LogDesk Lab</h1>
+            <p>Учебная система заявок для демонстрации логирования и отладки тестов.</p>
+        </header>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <section class="messages" data-testid="messages">
+                    {% for category, message in messages %}
+                        <div class="message {{ category }}" data-testid="flash-message">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </section>
+            {% endif %}
+        {% endwith %}
+
+        <section class="card">
+            <h2>Создать заявку</h2>
+
+            <form action="{{ url_for('create_ticket') }}" method="post" data-testid="ticket-form">
+                <label for="title">Название заявки</label>
+                <input
+                    id="title"
+                    name="title"
+                    type="text"
+                    placeholder="Например: Не работает кнопка входа"
+                    data-testid="ticket-title"
+                >
+
+                <label for="category">Категория</label>
+                <input
+                    id="category"
+                    name="category"
+                    type="text"
+                    placeholder="Например: Интерфейс"
+                    data-testid="ticket-category"
+                >
+
+                <label for="priority">Приоритет</label>
+                <select id="priority" name="priority" data-testid="ticket-priority">
+                    <option value="low">Низкий</option>
+                    <option value="medium">Средний</option>
+                    <option value="high">Высокий</option>
+                </select>
+
+                <button type="submit" data-testid="create-ticket-button">
+                    Создать заявку
+                </button>
+            </form>
+        </section>
+
+        <section class="card">
+            <h2>Учебные действия для отладки</h2>
+
+            <div class="debug-actions">
+                <a href="{{ url_for('debug_slow') }}" data-testid="slow-link">
+                    Вызвать медленный запрос
+                </a>
+
+                <a href="{{ url_for('debug_crash') }}" data-testid="crash-link">
+                    Вызвать серверную ошибку 500
+                </a>
+            </div>
+        </section>
+
+        <section class="card" data-testid="ticket-list">
+            <h2>Список заявок</h2>
+
+            {% if tickets %}
+                {% for ticket in tickets %}
+                    <article class="ticket" data-testid="ticket-card">
+                        <h3 data-testid="ticket-title-view">
+                            {{ ticket.title }}
+                        </h3>
+
+                        <p>
+                            Категория:
+                            <strong>{{ ticket.category }}</strong>
+                        </p>
+
+                        <p>
+                            Приоритет:
+                            <strong>{{ ticket.priority }}</strong>
+                        </p>
+
+                        <p>
+                            Статус:
+                            <strong data-testid="ticket-status-view">
+                                {{ ticket.status }}
+                            </strong>
+                        </p>
+
+                        <form
+                            action="{{ url_for('change_status', ticket_id=ticket.id) }}"
+                            method="post"
+                            class="inline-form"
+                        >
+                            <select name="status" data-testid="status-select">
+                                <option value="new">Новая</option>
+                                <option value="in_progress">В работе</option>
+                                <option value="done">Выполнена</option>
+                            </select>
+
+                            <button type="submit" data-testid="change-status-button">
+                                Изменить статус
+                            </button>
+                        </form>
+
+                        <form
+                            action="{{ url_for('delete_ticket', ticket_id=ticket.id) }}"
+                            method="post"
+                            class="inline-form"
+                            onsubmit="return confirm('Удалить заявку?');"
+                        >
+                            <button type="submit" data-testid="delete-ticket-button">
+                                Удалить
+                            </button>
+                        </form>
+                    </article>
+                {% endfor %}
+            {% else %}
+                <p class="empty" data-testid="empty-list">
+                    Заявок пока нет.
+                </p>
+            {% endif %}
+        </section>
+    </main>
+</body>
+</html>
